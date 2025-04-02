@@ -26,3 +26,4 @@ Your challenge is to explore how large language models (LLMs), like those availa
 
 - **Flexibility in Coding Languages**: Feel free to use any programming language that you are comfortable with. The files in the `src/` directory are provided as a starting point and can be adapted to suit your needs.
 - **Customizing GitHub Actions**: You are welcome to modify the GitHub Actions workflow file to better fit your project requirements. The provided configuration is just a starting point.
+- **Example Code**: The `src/example_code.py` file contains sample functions with intentional bugs and linter errors. Use this code to test and validate your solutions, ensuring they can effectively identify and address these issues.
