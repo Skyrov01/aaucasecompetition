@@ -10,6 +10,8 @@ Your challenge is to explore how large language models (LLMs), like those availa
 
 ## Tasks
 
+These tasks are intended to inspire you and provide ideas for your projects. You can choose to work on any of them, or come up with your own unique solutions. The goal is to be creative and think outside the box, focusing on developing tools that reduce daily repetitive and administrative tasks.
+
 1. **Automating Pull Requests**: Implement a solution that uses LLMs to automatically generate pull requests for bug fixes or new features. This includes generating detailed descriptions based on the changes made.
 2. **Bug Fix Suggestions**: Develop a system where LLMs analyze code changes and suggest potential bug fixes. This could involve identifying common coding errors and proposing corrections.
 3. **Code Review Automation**: Create a tool that uses LLMs to assist in code reviews by automatically adding suggestions and comments to the code where improvements can be made. This includes enforcing consistent quality and style across the codebase.
@@ -24,6 +26,6 @@ Your challenge is to explore how large language models (LLMs), like those availa
 
 ### Notes:
 
-- **Flexibility in Coding Languages**: Feel free to use any programming language that you are comfortable with. The files in the `src/` directory are provided as a starting point and can be adapted to suit your needs.
+- **Flexibility in Coding Languages**: Feel free to use any programming language that you are comfortable with. The files in the `src/` directory are provided as ideas for your projects and can be adapted to suit your needs.
 - **Customizing GitHub Actions**: You are welcome to modify the GitHub Actions workflow file to better fit your project requirements. The provided configuration is just a starting point.
-- **Example Code**: The `src/example_code.py` file contains sample functions with intentional bugs and linter errors. Use this code to test and validate your solutions, ensuring they can effectively identify and address these issues.
+- **Example Code**: The `src/example_code.py` file contains sample functions with intentional bugs and linter errors. Use this code as an idea for your projects to test and validate your solutions, ensuring they can effectively identify and address these issues.
