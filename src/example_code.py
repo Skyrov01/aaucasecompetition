@@ -17,8 +17,8 @@ def buggy_function(x):
     return x / 0  # This will raise a ZeroDivisionError
 
 # Introduce linter errors
-def another_function( a ,b ):
-    return a+b
+def another_function(a ,b , c):
+    return a+b+c
 
 # Introduce another bug
 def faulty_logic(a, b):
