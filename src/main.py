@@ -44,7 +44,6 @@ def main():
                 for line in hunk["+"]:
                     print("     +", line)
 
-    exit()
 
     # STEP 1: Handle title
     is_user_happy = False
