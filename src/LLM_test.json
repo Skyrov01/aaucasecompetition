@@ -1,0 +1,15 @@
+{
+    "parameters": {
+
+
+        "model": "gemini-2.5-pro-exp-03-25",
+
+        "prompt_test": "you are math teacher and you need to solve math problem, give only the answer. for example if I say 1 + 1 = ? you need to answer 2 without anything else",
+        "prompt_title": "From the following description provided give me only one title in max 10 words",
+        "prompt_description":"From the following files and changes, I want you to give me to say: 'name of the file that have changed': 'brief description of the changes'. description max 3 lines no code inside",
+        "prompt_bug":"",
+        "prompt_keywords":"I need from you that based on a description of changes of different files you give me a list of different keywords that represent the content of the of the description",
+
+        "_comment2": ""
+    }
+}

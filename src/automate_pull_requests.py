@@ -1,10 +1,15 @@
 from github import Github
 from git import Repo
+import json
 
 
 import os
 import sys
 from dotenv import load_dotenv
+
+from collections import defaultdict
+
+
 
 load_dotenv()
 
@@ -13,8 +18,23 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPO_NAME = "Skyrov01/aaucasecompetition"  
 PREDEFINED_REVIEWERS = ["Skyrov01", "DavideRago"]
 PR_TYPES = ["task", "bug", "feature", "hotfix", "fix", "style", "refactor", "test"]
-# =================================== #
 
+EXT_SKILL_MAP = {
+    ".py": "Python",
+    ".js": "JavaScript",
+    ".ts": "TypeScript",
+    ".java": "Java",
+    ".cpp": "C++",
+    ".md": "Documentation",
+}
+
+SENIORITY_WEIGHT = {
+    "Senior": 3,
+    "Mid": 2,
+    "Junior": 1
+}
+
+# =================================== #
 
 
 
@@ -74,6 +94,27 @@ def filter_valid_reviewers(g, repo_name, reviewers, author_login):
     return valid
 
 
+def load_available_reviewers(json_path, current_user, target_team=None):
+    """
+    Reads developers.json and returns a list of GitHub usernames who can review the PR.
+    Excludes the PR author and only includes available devs.
+    Optionally filters by team.
+    """
+    with open(json_path, "r") as f:
+        devs = json.load(f)
+
+    eligible = []
+    for dev in devs:
+        if dev["github_username"] == current_user:
+            continue  # skip PR author
+        if not dev.get("availability_for_pr", False):
+            continue  # skip if not available
+        if target_team and dev.get("team") != target_team:
+            continue  # skip if filtering by team
+        eligible.append(dev["github_username"])
+
+    return eligible
+
 # The Magic of LLMs #
 # Here we need to extract all the information need for the LLM.
 
@@ -126,3 +167,40 @@ def get_commit_diff_details(repo, base_branch, current_branch):
 
     save_hunk()  # save the last one
     return {k: v for k, v in commits.items() if v}
+
+
+
+def smart_reviewer_picker(json_path, current_user, changed_files):
+    """
+    Select reviewers based on availability, skills matching changed files, and seniority.
+    Returns sorted GitHub usernames.
+    """
+    with open(json_path, "r") as f:
+        devs = json.load(f)
+
+    skill_needs = set()
+    for file in changed_files:
+        ext = os.path.splitext(file)[1]
+        skill = EXT_SKILL_MAP.get(ext)
+        if skill:
+            skill_needs.add(skill)
+
+    scores = defaultdict(int)
+
+    for dev in devs:
+        if dev["github_username"] == current_user:
+            continue
+        if not dev.get("availability_for_pr", False):
+            continue
+
+        skill_score = 0
+        for skill in dev.get("skills", []):
+            if skill["name"] in skill_needs:
+                skill_score += SENIORITY_WEIGHT.get(skill["level"], 0)
+
+        if skill_score > 0:
+            scores[dev["github_username"]] += skill_score
+
+    # Sort by score (high to low)
+    sorted_reviewers = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    return [username for username, _ in sorted_reviewers]
