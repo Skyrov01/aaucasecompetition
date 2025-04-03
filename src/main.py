@@ -1,5 +1,7 @@
 from automate_pull_requests import *
 import re
+from LLM_calls import *
+
 title = ""
 description = ""
 is_user_happy = False
@@ -29,28 +31,26 @@ def main():
 
     commit_changes = get_commit_diff_details(repo, base, branch)
 
-    print("\n🔁 Related Changes (Grouped by File & Hunk):")
-    print(commit_changes)
-    for file, hunks in commit_changes.items():
-        print(f"\n📄 {file}")
-        for idx, hunk in enumerate(hunks):
-            print(f"  🔸 Change #{idx + 1}")
-            if hunk["-"]:
-                print("   ➖ Removed:")
-                for line in hunk["-"]:
-                    print("     -", line)
-            if hunk["+"]:
-                print("   ➕ Added:")
-                for line in hunk["+"]:
-                    print("     +", line)
+    # STEP 1: Handle description
+    is_user_happy = False
+    msg = get_input("Want me to generate the description? yes:no\n")
+    if msg.lower() == "yes":
+        while not is_user_happy:
+            description = generate_description(commits = commit_changes)
+            msg = get_input("Is the description ok? yes:no\n")
+            if msg.lower() == "yes":
+                is_user_happy = True
+            
+    else:
+        description = get_input("Enter PR Description: ")
 
 
-    # STEP 1: Handle title
+    # STEP 2: Handle title
     is_user_happy = False
     msg = get_input("Want me to generate the title? yes:no\n")
     if msg.lower() == "yes":
         while not is_user_happy:
-            title = generate_title()
+            title = generate_title(description=description)
             msg = get_input("Is the title ok? yes:no\n")
             if msg.lower() == "yes":
                 is_user_happy = True
@@ -60,19 +60,6 @@ def main():
 
     pr_type = select_pr_type()
     final_title = f"{pr_type}: {title}"
-
-    # STEP 2: Handle description
-    is_user_happy = False
-    msg = get_input("Want me to generate the description? yes:no\n")
-    if msg.lower() == "yes":
-        while not is_user_happy:
-            description = generate_description()
-            msg = get_input("Is the description ok? yes:no\n")
-            if msg.lower() == "yes":
-                is_user_happy = True
-            
-    else:
-        description = get_input("Enter PR Description: ")
 
     
 

@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Vlad Isuf",
+    "github_username": "Skyrov01",
+    "email": "visuf24@student.aau.dk",
+    "team": "backend",
+    "availability_for_pr": true,
+    "skills": [
+      { "name": "Python", "level": "Mid" },
+      { "name": "Django", "level": "Senior" },
+      { "name": "PostgreSQL", "level": "Mid" }
+    ]
+  },
+  {
+    "name": "Bob Smith",
+    "github_username": "bobcoder",
+    "email": "bob@example.com",
+    "team": "frontend",
+    "availability_for_pr": false,
+    "skills": [
+      { "name": "React", "level": "Mid" },
+      { "name": "TypeScript", "level": "Mid" },
+      { "name": "CSS", "level": "Senior" },
+      { "name": "Python", "level": "Mid" }
+    ]
+  },
+  {
+    "name": "Davide Ragona",
+    "github_username": "DavideRago",
+    "email": "drag24student.aau.dk",
+    "team": "backend",
+    "availability_for_pr": true,
+    "skills": [
+      { "name": "AWS", "level": "Mid" },
+      { "name": "Docker", "level": "Mid" },
+      { "name": "Go", "level": "Junior" },
+      { "name": "Python", "level": "Senior" }
+    ]
+  },
+  {
+    "name": "Dummy Developer",
+    "github_username": "Dummy Developer",
+    "email": "drag24student.aau.dk",
+    "team": "backend",
+    "availability_for_pr": true,
+    "skills": [
+      { "name": "AWS", "level": "Mid" },
+      { "name": "Docker", "level": "Mid" },
+      { "name": "Go", "level": "Junior" },
+      { "name": "Python", "level": "Senior" }
+    ]
+  }
+]
