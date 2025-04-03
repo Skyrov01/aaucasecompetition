@@ -9,9 +9,13 @@ load_dotenv()
 # ========== CONFIGURATION ========== #
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  
 REPO_NAME = "Skyrov01/aaucasecompetition"  
-PREDEFINED_REVIEWERS = ["dev-lead", "team-reviewer"]
+PREDEFINED_REVIEWERS = ["Skyrov01", "DavideRago"]
 PR_TYPES = ["task", "bug", "feature", "hotfix", "fix", "style", "refactor", "test"]
 # =================================== #
+
+
+
+
 
 def get_current_branch(repo):
     return repo.active_branch.name
@@ -51,34 +55,36 @@ def create_pr(g, repo_name, base, head, title, body, reviewers):
     pr.create_review_request(reviewers=reviewers)
     print(f"✅ Pull request created: {pr.html_url}")
 
-def main():
-    if not GITHUB_TOKEN:
-        print("❌ GITHUB_TOKEN is not set in your environment.")
-        sys.exit(1)
+def filter_valid_reviewers(g, repo_name, reviewers, author_login):
+    repo = g.get_repo(repo_name)
+    valid = []
+    for user in reviewers:
+        if user == author_login:
+            print(f"⚠️ Skipping {user} (PR author cannot review their own PR).")
+            continue
+        try:
+            if repo.has_in_collaborators(user):
+                valid.append(user)
+            else:
+                print(f"⚠️ {user} is not a collaborator. Skipping.")
+        except Exception as e:
+            print(f"⚠️ Could not validate {user}: {e}")
+    return valid
 
-    repo = Repo("../")
-    if repo.bare:
-        print("❌ Not a Git repository.")
-        sys.exit(1)
 
-    branch = get_current_branch(repo)
-    pr_type = select_pr_type()
-    base = get_input("Enter the base branch (e.g., main, develop): ")
-    title = get_input("Enter PR Title: ")
-    description = get_input("Enter PR Description: ")
-    final_title = f"{pr_type}: {title}"
+# The Magic of LLMs #
+# Here we need to extract all the information need for the LLM.
 
-    push_branch(repo, branch)
-
-    github = Github(GITHUB_TOKEN)
-    create_pr(github, REPO_NAME, base, branch, final_title, description, PREDEFINED_REVIEWERS)
-
-if __name__ == "__main__":
-    main()
-
-    # A minor change added here.
-    # NEW_FEATURE:START
-
-    print("This is the best feature ever.")
-
-    # NEW_FEATURE:END
+def get_committed_files(repo, base_branch, current_branch):
+    """
+    Returns a list of file paths that were changed between base_branch and current_branch.
+    """
+    try:
+        # Fetch latest from origin to ensure we compare against up-to-date base
+        repo.git.fetch()
+        diff = repo.git.diff('--name-only', f'origin/{base_branch}...{current_branch}')
+        changed_files = diff.strip().split('\n') if diff else []
+        return changed_files
+    except Exception as e:
+        print(f"❌ Error getting committed files: {e}")
+        return []
