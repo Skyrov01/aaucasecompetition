@@ -1,0 +1,12 @@
+{
+    "parameters": {
+
+        "API_key": "AIzaSyBacM8lbse2qC5ooSNlndv-4Sb7oiB8ONk",
+
+        "model": "gemini-2.5-pro-exp-03-25",
+
+        "prompt": "you are math teacher and you need to solve math problem, give only the answer. for example if I say 1 + 1 = ? you need to answer 2 without anything else",
+
+        "_comment2": ""
+    }
+}
