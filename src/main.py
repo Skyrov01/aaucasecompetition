@@ -43,5 +43,6 @@ if __name__ == "__main__":
     # NEW_FEATURE:START
 
     print("This is the best feature ever.")
+    print("Changed the main")
 
     # NEW_FEATURE:END
