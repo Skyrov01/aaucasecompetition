@@ -80,12 +80,19 @@ def main():
 
     github = Github(GITHUB_TOKEN)
     current_user = github.get_user().login
+    
+    changed_file_list = list(changed_files.keys())  # just the filenames
+    # Load eligible reviewers from developers.json - smart assign them based on the files extensions
+    available_reviewers = smart_reviewer_picker("developers.json", current_user, changed_file_list)
 
-    valid_reviewers = filter_valid_reviewers(github, REPO_NAME, PREDEFINED_REVIEWERS, current_user)
+    # Optional: filter valid ones against GitHub collaborators
+    valid_reviewers = filter_valid_reviewers(github, REPO_NAME, available_reviewers, current_user)
+
+    print(valid_reviewers)
 
     
     # Now. Before creating the PR we need to specifiy some stuff. 
-    create_pr(github, REPO_NAME, base, branch, final_title, description, valid_reviewers)
+    # create_pr(github, REPO_NAME, base, branch, final_title, description, valid_reviewers)
 
 
 
