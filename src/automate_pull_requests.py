@@ -75,3 +75,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    # A minor change added here.
+    # NEW_FEATURE:START
+
+    print("This is the best feature ever.")
+
+    # NEW_FEATURE:END
