@@ -32,3 +32,10 @@ try:
 
 except:
     print('Test doesn\'t exist')
+
+
+
+def new_function(a):
+	print(a)
+
+new_function(10)
