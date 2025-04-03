@@ -28,6 +28,7 @@ def faulty_logic(a, b):
 
 try:
     user_input = int(input('Give me a number: '))
-		print(Test)
+    print('Test')
+
 except:
     print('Test doesn\'t exist')
