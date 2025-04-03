@@ -31,9 +31,10 @@ def main():
     for file in changed_files:
         print(f"- {file}")
 
-
+        description += "\n " + file
     # Now. Before creating the PR we need to specifiy some stuff. 
-    # create_pr(github, REPO_NAME, base, branch, final_title, description, valid_reviewers)
+    create_pr(github, REPO_NAME, base, branch, final_title, description, valid_reviewers)
+
 
 
 if __name__ == "__main__":
