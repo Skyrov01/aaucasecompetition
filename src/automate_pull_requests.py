@@ -1,5 +1,7 @@
 from github import Github
 from git import Repo
+
+
 import os
 import sys
 from dotenv import load_dotenv
@@ -88,3 +90,39 @@ def get_committed_files(repo, base_branch, current_branch):
     except Exception as e:
         print(f"❌ Error getting committed files: {e}")
         return []
+    
+
+
+
+def get_commit_diff_details(repo, base_branch, current_branch):
+    diff_output = repo.git.diff(f'origin/{base_branch}...{current_branch}', unified=0)
+    commits = {}
+    current_file = None
+    hunk = {"-": [], "+": []}
+
+    def save_hunk():
+        nonlocal hunk
+        if (hunk["-"] or hunk["+"]) and current_file:
+            if current_file not in commits:
+                commits[current_file] = []
+            commits[current_file].append(hunk)
+            hunk = {"-": [], "+": []}
+
+    for line in diff_output.splitlines():
+        if line.startswith("diff --git"):
+            save_hunk()
+            current_file = None
+        elif line.startswith("+++ b/"):
+            current_file = line[6:].strip()
+        elif line.startswith("--- a/"):
+            continue
+        elif line.startswith("@@"):
+            # start of a new diff hunk
+            save_hunk()
+        elif line.startswith("+") and not line.startswith("+++"):
+            hunk["+"].append(line[1:].strip())
+        elif line.startswith("-") and not line.startswith("---"):
+            hunk["-"].append(line[1:].strip())
+
+    save_hunk()  # save the last one
+    return {k: v for k, v in commits.items() if v}
