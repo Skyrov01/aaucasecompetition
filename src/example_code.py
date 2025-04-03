@@ -25,3 +25,9 @@ def faulty_logic(a, b):
     if a > b:
         return b - a  # This logic might be incorrect based on the intended functionality
     return a - b
+
+try:
+    user_input = int(input('Give me a number: '))
+		print(Test)
+except:
+    print('Test doesn\'t exist')
